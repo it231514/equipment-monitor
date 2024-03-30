@@ -2,7 +2,7 @@ import { atom, selector } from "recoil";
 
 export const isLoggedInState = atom<boolean>({
   key: "loggedInState",
-  default: false,
+  default: true,
 });
 
 export const isLoggedInSelector = selector<boolean>({

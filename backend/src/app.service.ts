@@ -22,7 +22,7 @@ export class AppService {
     return 'Hello World!';
   }
   async findAll(): Promise<any> {
-    const sensor = await this.sensorRepository.find();
+    const sensor = await this.sensorRepository.find({ take: 20 });
     console.log(sensor);
     return sensor;
   }
@@ -40,5 +40,37 @@ export class AppService {
     const sensorType = await this.sensorTypeRepository.find({ take: 10 });
     console.log(sensorType);
     return sensorType;
+  }
+  async findMessageValueForSensor(sensorId: string, tag: string): Promise<any> {
+    const sensorType = await this.messageValueRepository.findBy({
+      Id: sensorId,
+      Tag: tag,
+    });
+    console.log(sensorType);
+    return sensorType;
+  }
+  async findTemperatureMessages(sensorId: string, tag: string): Promise<any> {
+    const sigfoxSensorId = 'A737D7';
+    tag = 'hours';
+    const timestamp = '2023-09-01';
+
+    const query = `
+      SELECT [dbo].[MessageValue].[value], [dbo].[Message].[timestamp]
+      FROM [dbo].[MessageValue]
+      RIGHT JOIN [dbo].[Message]
+      ON [dbo].[MessageValue].[messageid] = [dbo].[Message].[id]
+      WHERE messageid in (
+        SELECT id FROM [dbo].[Message] where sensorid=(
+          SELECT id FROM [dbo].[Sensor] WHERE sigfoxsensorid = '${sigfoxSensorId}'
+        )
+      )
+      and [dbo].[MessageValue].[tag]='${tag}'
+      and timestamp > '${timestamp}'
+      Order by timestamp asc
+    `;
+
+    const messages = await this.messageValueRepository.query(query);
+    console.log(messages);
+    return messages;
   }
 }

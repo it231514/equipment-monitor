@@ -1,153 +1,63 @@
 "use client";
-import { useState } from "react";
-import sensorApi from "./service/sensor.service";
-import { Message } from "./dto/Message.dto";
+import React from "react";
+import { Container, Typography, Button, Box } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { keyframes } from "@emotion/react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const [sensor, setSensor] = useState();
-  const [sensorType, setSensorType] = useState();
-  const [message, setMessage] = useState();
-  const [messageValue, setMessageValue] = useState();
+const useStyles = makeStyles((theme: any) => ({
+  root: {
+    minHeight: "100vh",
+    backgroundImage: "linear-gradient(358deg, #f4f0f1 30%, #abd4fc 90%)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  button: {
+    animation: `$pulse 2s infinite`,
+    backgroundColor: "#1876d2",
+  },
+  "@keyframes pulse": {
+    "0%": {
+      transform: "scale(1)",
+    },
+    "50%": {
+      transform: "scale(1.05)",
+    },
+    "100%": {
+      transform: "scale(1)",
+    },
+  },
+}));
 
-  async function getMessageData() {
-    const mesages = await sensorApi.getMessage();
-    setMessage(mesages);
-  }
-  async function getMessageValueData() {
-    const mesages = await sensorApi.getMessageValue();
-    setMessageValue(mesages);
-  }
-  async function getSensorData() {
-    const mesages = await sensorApi.getSensor();
-    setSensor(mesages);
-  }
-  async function getSensorTypeData() {
-    const mesages = await sensorApi.getSensorType();
-    setSensorType(mesages);
-  }
+function LandingPage() {
+  const router = useRouter();
+  const classes = useStyles();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Hallo</h1>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <button onClick={getSensorData}>Sensor</button>
-          <ul style={{ textAlign: "center" }}>
-            {sensor &&
-              sensor.map((item: Message) => {
-                return (
-                  <li
-                    style={{
-                      margin: "10px",
-                      border: "1px solid white",
-                      padding: "10px",
-                      borderRadius: "5px",
-                    }}
-                    key={item.Id}
-                  >
-                    {item.Project}
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <button onClick={getSensorTypeData}>Sensor Type</button>
-          <ul style={{ textAlign: "center" }}>
-            {sensorType &&
-              sensorType.map((item: Message) => {
-                return (
-                  <li
-                    style={{
-                      margin: "10px",
-                      border: "1px solid white",
-                      padding: "10px",
-                      borderRadius: "5px",
-                    }}
-                    key={item.Id}
-                  >
-                    {item.Project}
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <button onClick={getMessageData}>Message</button>
-          <ul style={{ textAlign: "center" }}>
-            {message &&
-              message.map((item: Message) => {
-                return (
-                  <li
-                    style={{
-                      margin: "10px",
-                      border: "1px solid white",
-                      padding: "10px",
-                      borderRadius: "5px",
-                    }}
-                    key={item.Id}
-                  >
-                    {item.Project}
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <button onClick={getMessageValueData}>Message Value</button>
-          <ul style={{ textAlign: "center" }}>
-            {messageValue &&
-              messageValue.map((item: Message) => {
-                return (
-                  <li
-                    style={{
-                      margin: "10px",
-                      border: "1px solid white",
-                      padding: "10px",
-                      borderRadius: "5px",
-                    }}
-                    key={item.Id}
-                  >
-                    {item.Project}
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-      </div>
-    </main>
+    <div className={classes.root}>
+      <Container maxWidth="md">
+        <Box sx={{ my: 4 }}>
+          <Typography variant="h2" component="h1" gutterBottom>
+            Equipment Management Application
+          </Typography>
+          <Typography variant="h5" component="h2" gutterBottom>
+            Manage your equipment efficiently and effortlessly
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            className={classes.button}
+            onClick={() => router.push("/sensor")}
+          >
+            Get Started
+          </Button>
+        </Box>
+      </Container>
+    </div>
   );
 }
+
+export default LandingPage;

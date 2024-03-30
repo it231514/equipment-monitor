@@ -1,0 +1,383 @@
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}
+
+/* For Mobile Phones */
+@media screen and (max-width: 580px) {
+  /* .tileContainerHeaderText {
+        font-size: 16px !important;
+        font-weight: 600;
+    }
+    .tileContainerSubText {
+        font-size: 10px !important;
+    } */
+}
+/* For Mobile Phones */
+@media screen and (max-width: 935px) {
+  .headerBgImg {
+    justify-content: left !important;
+  }
+  .containerBottom {
+    font-size: 12px !important;
+  }
+}
+
+/* Navigation */
+nav {
+  position: relative;
+}
+
+/* Heder Navigation */
+.headerNav {
+  height: 44px;
+  width: 100%;
+  /* background: -moz-linear-gradient(90deg, rgba(34, 113, 144, 1) 0%, rgba(34, 113, 144, 1) 100%);
+	background: -webkit-linear-gradient(90deg, rgba(34, 113, 144, 1) 0%, rgba(34, 113, 144, 1) 100%);
+	background: linear-gradient(90deg, rgb(34 113 144) 0%, rgb(0 38 59) 100%); */
+  background: linear-gradient(90deg, rgb(0 38 59) 0%, rgb(33 112 144) 100%);
+  border-bottom: 1px solid #568aa0;
+}
+
+/* Header Logo */
+.headerLogoContainer {
+  float: left;
+  margin-left: 40px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 44px;
+}
+
+.headerLogo {
+  height: 32px;
+  width: 32px;
+}
+
+/* Header Text */
+.headerTextContainer {
+  position: absolute;
+  left: 120px;
+}
+
+.headerText {
+  color: #ffffff;
+}
+
+/* Header Menu */
+.headerMenuButtonContainer {
+  float: right;
+  margin-right: 40px !important;
+  height: 44px;
+}
+
+.headerMenuButton {
+  border-radius: 50%;
+  background-color: #588ea6;
+  border: none;
+  height: 32px;
+  width: 32px;
+  cursor: pointer;
+  color: #ffffff !important;
+  margin-top: 6px;
+}
+
+.back {
+  text-align: center;
+  background-position: right center !important;
+  background: no-repeat;
+  background-image: none, linear-gradient(90deg, #00263a 0%, #217090 100%) !important;
+  background-clip: content-box;
+  /* justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  overflow: auto; */
+}
+
+/* Container Bottom part */
+.containerBottom {
+  text-align: center;
+  padding: 20px;
+  padding-bottom: 60px;
+}
+
+.containerBottom h1 {
+  text-decoration: underline;
+  text-decoration-color: #c3d72b !important;
+  text-decoration-thickness: 4px;
+  text-underline-offset: 3px;
+}
+
+/* Tiles */
+.tileContainerHeaderText {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.tileContainerSubText {
+  font-size: 14px;
+}
+
+.tileContainer {
+  position: relative;
+  cursor: pointer;
+}
+
+.tile {
+  color: #00263a;
+  display: block;
+  height: 200px;
+  /* max-width: 200px; */
+  width: 200px;
+  background-color: #ffffff;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid #54879d;
+}
+
+.overlayTile {
+  position: absolute;
+  bottom: 0;
+  background: rgb(87 141 166 / 50%);
+  width: -webkit-fill-available;
+  transition: 1s ease;
+  opacity: 0;
+  padding: 21px;
+  text-align: center;
+  height: 200px;
+  margin: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 30px 0px #00263b;
+}
+
+.tileContainer:hover .overlayTile {
+  opacity: 1;
+}
+
+.tileIcon {
+  font-size: 30px !important;
+  position: absolute;
+  bottom: 45px;
+}
+
+/* Dropdown Button */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  right: -30px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #558ba178;
+  margin-top: 3px;
+}
+
+.dropdown-content a {
+  color: #00263a;
+  padding: 10px 10px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #568da471;
+  border-radius: 5px;
+}
+
+.dropdownIcon {
+  font-size: 14px !important;
+  width: 30px;
+  color: #578ba3;
+  padding-right: 10px;
+}
+
+.show {
+  display: block;
+}
+
+/* Dialog */
+.dialogContainer {
+  padding: 20px;
+}
+
+.dialog {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0 0 0 / 80%);
+  padding-top: 60px;
+}
+
+.dialog-content {
+  background-color: #fefefe;
+  margin: 5px auto;
+  border: 1px solid #888;
+  width: 350px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 30px 0px #00263b;
+  margin-bottom: 120px;
+}
+
+.closeDialog {
+  float: right;
+  margin-right: 20px;
+  padding-top: 10px;
+  color: #217090;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.closeDialog:hover,
+.closeDialog:focus {
+  color: #578da6;
+  cursor: pointer;
+}
+
+.animateDialog {
+  -webkit-animation: animateDialogzoom 0.6s;
+  animation: animateDialogzoom 0.6s;
+}
+
+@-webkit-keyframes animateDialogzoom {
+  from {
+    -webkit-transform: scale(0);
+  }
+
+  to {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes animateDialogzoom {
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Dialog Input */
+input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+/* Dialog Cancel button */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #217090;
+}
+
+.containerFooter {
+  bottom: 0;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  background-color: #c3d72b;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
+/* Dialog Login Button */
+.loginButton {
+  background-color: #217090;
+  color: white;
+  padding: 20px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.loginButton:hover {
+  opacity: 0.7;
+}
+
+.tab {
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+/* Dialog TABs */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  color: #217090;
+}
+
+.tab button:hover {
+  border-bottom: 4px solid #c3d72b;
+  color: #739aaf;
+}
+
+.tab button.active {
+  border-bottom: 4px solid #c3d72b;
+}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  -webkit-animation: fadeEffect 1s;
+  animation: fadeEffect 1s;
+}
+
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
