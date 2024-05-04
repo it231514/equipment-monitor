@@ -1,9 +1,6 @@
-import React from "react";
-import logo from "../img/CONCIRCLE_icon_white_2023_RGB.png";
-import { useRecoilValue } from "recoil";
-import { Button, Icon } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Header(props: any) {
   const navigate = useNavigate();

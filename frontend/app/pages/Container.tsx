@@ -1,39 +1,32 @@
 "use client";
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import HelpCenterIcon from "@mui/icons-material/HelpCenter";
+import HomeIcon from "@mui/icons-material/Home";
+import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Button, Menu, MenuItem } from "@mui/material";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import HomeIcon from "@mui/icons-material/Home";
-import HelpCenterIcon from "@mui/icons-material/HelpCenter";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import ContactMailIcon from "@mui/icons-material/ContactMail";
-import AutoGraphIcon from "@mui/icons-material/AutoGraph";
-import SensorsIcon from "@mui/icons-material/Sensors";
-import TypeSpecimenIcon from "@mui/icons-material/TypeSpecimen";
-import InboxIcon from "@mui/icons-material/Inbox";
-import MessageIcon from "@mui/icons-material/Message";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { styled, useTheme } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
-import { Button, Menu, MenuItem } from "@mui/material";
+import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { Login, Register } from "../dto/auth.dto";
 import authApi from "../service/auth";
 import "../style/Home.css";
-import { isLoggedInState } from "../state/userState";
-import { useRecoilState } from "recoil";
 // import useTranslation from "next-translate/useTranslation";
 
 const drawerWidth = 240;
@@ -219,7 +212,7 @@ export default function PersistentDrawerLeft({ children, ...props }: Props) {
             </IconButton>
           )}
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Equipment Menagement
+            Equipment Management
           </Typography>
           {/* <h1>{t("title")}</h1> */}
           {auth ? (
@@ -475,11 +468,11 @@ export default function PersistentDrawerLeft({ children, ...props }: Props) {
               path: "/about",
               icon: <HelpCenterIcon></HelpCenterIcon>,
             },
-            {
-              text: "Contact",
-              path: "/contact",
-              icon: <ContactMailIcon></ContactMailIcon>,
-            },
+            // {
+            //   text: "Contact",
+            //   path: "/contact",
+            //   icon: <ContactMailIcon></ContactMailIcon>,
+            // },
             // {
             //   text: "Sensors",
             //   path: "/sensor",
@@ -506,9 +499,9 @@ export default function PersistentDrawerLeft({ children, ...props }: Props) {
             //   icon: <AutoGraphIcon></AutoGraphIcon>,
             // },
             {
-              text: "Create Equimpent",
-              path: "/createEquipment",
-              icon: <AutoGraphIcon></AutoGraphIcon>,
+              text: "Equipment",
+              path: "/equipment/list",
+              icon: <HomeRepairServiceIcon></HomeRepairServiceIcon>,
             },
           ].map((item, index) => (
             <ListItem key={item.text} disablePadding>

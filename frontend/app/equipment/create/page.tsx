@@ -1,8 +1,6 @@
 "use client";
-import React from "react";
-import { Container, Typography, Box, TextField } from "@mui/material";
+import { Box, Container, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import "./styles.css";
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -63,7 +61,7 @@ function CreateEquipmentPage() {
               <li key={item}>{item}</li>
             ))}
           </ul>
-          {false ? (
+          {true ? (
             <button className="button"></button>
           ) : (
             <button className={classes.button}></button>
