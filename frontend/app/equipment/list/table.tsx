@@ -269,7 +269,12 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     </Toolbar>
   );
 }
-export default function EnhancedTable({ data }) {
+
+interface Props {
+  tableData: any[];
+}
+
+export default function EnhancedTable({ tableData }: Props) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("calories");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -277,7 +282,7 @@ export default function EnhancedTable({ data }) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  console.log(data);
+  console.log(tableData);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,

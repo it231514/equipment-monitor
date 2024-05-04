@@ -1,10 +1,11 @@
 "use client";
 import { Typography } from "@mui/material";
 import { useState } from "react";
+import { EquipmentList } from "../equipment.interface";
 import "./styles.css";
 import Table from "./table";
 
-function CreateEquipmentPage() {
+export default function CreateEquipmentPage() {
   const [equipmentList, setEquipmentList] = useState(getEquipmentList());
 
   function getEquipmentList() {
@@ -29,7 +30,7 @@ function CreateEquipmentPage() {
         desc: "Putzmaschine",
         loc: "Reinigungskammer",
       },
-    ];
+    ] as EquipmentList;
   }
 
   return (
@@ -39,10 +40,8 @@ function CreateEquipmentPage() {
           Equipment
         </Typography>
 
-        <Table data={equipmentList} />
+        <Table tableData={equipmentList} />
       </div>
     </div>
   );
 }
-
-export default CreateEquipmentPage;
