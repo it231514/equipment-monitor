@@ -39,8 +39,6 @@ export default function CreateEquipmentPage() {
   return (
     <div className="w-full min-h-[calc(100vh-64px)] back">
       <div className="p-4 flex flex-col justify-center items-center ">
-        <div className="w-full text-left mb-4 text-4xl">Equipment</div>
-
         <Table tableData={equipmentList} />
       </div>
     </div>
