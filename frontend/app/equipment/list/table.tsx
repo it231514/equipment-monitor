@@ -77,10 +77,10 @@ export default function EquipmentTable({ tableData }: Props) {
       columnVisibility: {},
     },
     muiPaginationProps: {
-      color: "secondary",
       rowsPerPageOptions: [1, 10, 25, 50, 100],
       shape: "rounded",
       variant: "outlined",
+      className: "[&_.Mui-selected]:bg-[#fbdc00]",
     },
     mrtTheme: (theme) => ({}),
     muiDetailPanelProps(props) {
