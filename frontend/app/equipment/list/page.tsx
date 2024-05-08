@@ -33,6 +33,84 @@ export default function CreateEquipmentPage() {
         desc: "Putzmaschine",
         loc: "Reinigungskammer",
       },
+      {
+        id: 1,
+        serial: "H6444",
+        desc: "Stapler",
+        loc: "Versandlager",
+      },
+      {
+        id: 2,
+        serial: "H9876",
+        desc: "Schweißgerät",
+        loc: "Werkstatt",
+      },
+      {
+        id: 3,
+        serial: "H342",
+        desc: "Laptop",
+        loc: "Büro",
+      },
+      {
+        id: 4,
+        serial: "H4356",
+        desc: "Putzmaschine",
+        loc: "Reinigungskammer",
+      },
+      {
+        id: 1,
+        serial: "H6444",
+        desc: "Stapler",
+        loc: "Versandlager",
+      },
+      {
+        id: 2,
+        serial: "H9876",
+        desc: "Schweißgerät",
+        loc: "Werkstatt",
+      },
+      {
+        id: 3,
+        serial: "H342",
+        desc: "Laptop",
+        loc: "Büro",
+      },
+      {
+        id: 4,
+        serial: "H4356",
+        desc: "Putzmaschine",
+        loc: "Reinigungskammer",
+      },
+      {
+        id: 1,
+        serial: "H6444",
+        desc: "Stapler",
+        loc: "Versandlager",
+      },
+      {
+        id: 2,
+        serial: "H9876",
+        desc: "Schweißgerät",
+        loc: "Werkstatt",
+      },
+      {
+        id: 3,
+        serial: "H342",
+        desc: "Laptop",
+        loc: "Büro",
+      },
+      {
+        id: 4,
+        serial: "H4356",
+        desc: "Putzmaschine",
+        loc: "Reinigungskammer",
+      },
+      {
+        id: 1,
+        serial: "H6444",
+        desc: "Stapler",
+        loc: "Versandlager",
+      },
     ] as EquipmentList;
   }
 
