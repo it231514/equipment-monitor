@@ -12,7 +12,7 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { useRouter } from "next/navigation";
-import { EquipmentList, EquipmentListElement } from "../equipment.interface";
+import Equipment, { EquipmentList } from "../equipment.interface";
 
 interface Props {
   tableData: EquipmentList;
@@ -21,24 +21,24 @@ interface Props {
 export default function EquipmentTable({ tableData }: Props) {
   const router = useRouter();
 
-  const columns: MRT_ColumnDef<EquipmentListElement>[] = [
+  const columns: MRT_ColumnDef<Equipment>[] = [
     {
       accessorKey: "id",
-      header: "ID",
+      header: "Pos",
       size: 80,
     },
     {
-      accessorKey: "serial",
+      accessorKey: "serialNr",
       header: "Serial",
       size: 100,
     },
     {
-      accessorKey: "desc",
+      accessorKey: "description",
       header: "Description",
       size: 200,
     },
     {
-      accessorKey: "loc",
+      accessorKey: "location",
       header: "Location",
       size: 150,
     },
@@ -69,6 +69,7 @@ export default function EquipmentTable({ tableData }: Props) {
         left: ["mrt-row-expand", "mrt-row-select"],
         right: ["mrt-row-actions"],
       },
+      columnVisibility: {},
     },
     muiPaginationProps: {
       color: "secondary",
@@ -77,7 +78,81 @@ export default function EquipmentTable({ tableData }: Props) {
       variant: "outlined",
     },
     mrtTheme: (theme) => ({}),
-    renderDetailPanel: ({ row }) => <Box>DETAILS</Box>,
+    muiDetailPanelProps(props) {
+      return {
+        sx: {
+          padding: 0,
+        },
+      };
+    },
+    renderDetailPanel: ({ row }) => {
+      return (
+        <div className="flex flex-col gap-4 w-full h-full py-2 px-4 bg-[#fbde0019]">
+          <div className="inline-flex flex-row gap-16">
+            <div className="flex items-center justify-center">
+              <img
+                src={row.original.image}
+                alt="Element Image"
+                className="w-28"
+              />
+            </div>
+            <div className="w-full">
+              <ul className="flex flex-col w-full [&>li]:border [&>li]:border-gray-200 [&>li]:bg-white [&>li]:rounded-sm [&>li]:my-[0.05rem] [&>li]:p-1 [&>li]:inline-flex">
+                <li>
+                  <span className="w-1/5">Manufacturer </span>
+                  <span>{row.original.manufacturer}</span>
+                </li>
+                <li>
+                  <span className="w-1/5">Chairperson</span>
+                  <span>{row.original.chairperson}</span>
+                </li>
+                <li>
+                  <span className="w-1/5">Last Inspection</span>
+                  <span>{row.original.lastInspection?.toDateString()}</span>
+                </li>
+                <li>
+                  <span className="w-1/5">Next Inspection</span>
+                  <span> {row.original.nextInspection?.toDateString()}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="inline-flex flex-col">
+            <span className="w-full bg-gray-200 flex mb-2 rounded-sm p-1 font-semibold">
+              Sensors{" "}
+            </span>
+            <ul className="grid w-full gap-2 grid-cols-[repeat(auto-fit,minmax(20rem,1fr))]">
+              {row.original.sensors?.map((sensor) => (
+                <li className="inline-flex flex-col bg-transparent ">
+                  <span className="bg-slate-100 p-2">
+                    SR: {sensor.serialNr} - TP: {sensor.type}
+                  </span>
+                  <ul className="inline-flex flex-col w-full [&>li]:border [&>li]:border-gray-100 [&>li]:bg-white [&>li]:rounded-sm [&>li]:p-1 [&>li]:inline-flex">
+                    <li>
+                      <span className="w-1/2">Mileage:</span>{" "}
+                      <span>{sensor.mileage}</span>
+                    </li>
+                    <li>
+                      <span className="w-1/2">Operating Hours: </span>{" "}
+                      <span>{sensor.operatingHours}</span>
+                    </li>
+                    <li>
+                      <span className="w-1/2">Current Value:</span>{" "}
+                      <span>
+                        {" "}
+                        {sensor.type === "temperature"
+                          ? sensor.temperature
+                          : sensor.humidity}
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    },
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
         <IconButton
