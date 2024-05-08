@@ -92,9 +92,25 @@ export default function CreateEquipmentPage() {
       },
       {
         id: 1,
+        image: TestImageBase64,
         serialNr: "H6444",
+        articleNr: "5674373423",
+        manufacturer: "Some Random Chinese Dude",
         description: "Stapler",
         location: "Versandlager",
+        chairperson: "Mr. Mustermann Max",
+        lastInspection: new Date(),
+        nextInspection: new Date(),
+        sensors: [
+          {
+            id: "fgjj9e",
+            type: "temperature",
+            serialNr: "45786947896",
+            operatingHours: 3453,
+            mileage: 5675,
+            temperature: 23.5,
+          },
+        ] as SensorList,
       },
       {
         id: 2,

@@ -1,10 +1,11 @@
 import {
+  AddCircle as AddCircleIcon,
   Delete as DeleteIcon,
   Edit as EditIcon,
   Image as ImageIcon,
   WorkHistory as WorkHistoryIcon,
 } from "@mui/icons-material";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import {
   MRT_ColumnDef,
   MRT_GlobalFilterTextField,
@@ -109,23 +110,23 @@ export default function EquipmentTable({ tableData }: Props) {
             </div>
             <div className="w-full">
               <ul className="flex flex-col w-full [&>li]:border [&>li]:border-gray-200 [&>li]:bg-white [&>li]:rounded-sm [&>li]:my-[0.05rem] [&>li]:p-1 [&>li]:inline-flex">
-                <li>
+                <li key={row.original.articleNr}>
                   <span className="w-1/5">Article Number </span>
                   <span>{row.original.articleNr}</span>
                 </li>
-                <li>
+                <li key={row.original.manufacturer}>
                   <span className="w-1/5">Manufacturer </span>
                   <span>{row.original.manufacturer}</span>
                 </li>
-                <li>
+                <li key={row.original.chairperson}>
                   <span className="w-1/5">Chairperson</span>
                   <span>{row.original.chairperson}</span>
                 </li>
-                <li>
+                <li key={row.original.lastInspection?.toDateString()}>
                   <span className="w-1/5">Last Inspection</span>
                   <span>{row.original.lastInspection?.toDateString()}</span>
                 </li>
-                <li>
+                <li key={row.original.nextInspection?.toDateString()}>
                   <span className="w-1/5">Next Inspection</span>
                   <span> {row.original.nextInspection?.toDateString()}</span>
                 </li>
@@ -140,20 +141,23 @@ export default function EquipmentTable({ tableData }: Props) {
               </span>
               <ul className="grid w-full gap-2 grid-cols-[repeat(auto-fit,minmax(20rem,1fr))]">
                 {row.original.sensors?.map((sensor) => (
-                  <li className="inline-flex flex-col bg-transparent ">
+                  <li
+                    key={sensor.id}
+                    className="inline-flex flex-col bg-transparent "
+                  >
                     <span className="bg-slate-100 p-2">
                       SR: {sensor.serialNr} (Type: {sensor.type})
                     </span>
                     <ul className="inline-flex flex-col w-full [&>li]:border [&>li]:border-gray-100 [&>li]:bg-white [&>li]:rounded-sm [&>li]:p-1 [&>li]:inline-flex">
-                      <li>
+                      <li key={sensor.mileage}>
                         <span className="w-1/2">Mileage:</span>
                         <span>{sensor.mileage} km</span>
                       </li>
-                      <li>
+                      <li key={sensor.operatingHours}>
                         <span className="w-1/2">Operating Hours: </span>
                         <span>{sensor.operatingHours} h</span>
                       </li>
-                      <li>
+                      <li key={sensor.type}>
                         <span className="w-1/2">Current Value:</span>
                         <span>
                           {sensor.type === "temperature"
@@ -204,11 +208,22 @@ export default function EquipmentTable({ tableData }: Props) {
     renderTopToolbar: ({ table }) => {
       return (
         <div className="flex flex-row px-2 py-4 justify-between mb-4 bg-[#fbdc00]">
-          <div className="flex flex-row">
-            <MRT_GlobalFilterTextField table={table} />
-            <MRT_ToggleFiltersButton table={table} />
+          <div>
+            <Tooltip title="Add Equipment" placement="bottom">
+              <IconButton
+                onClick={() => {
+                  router.push(`/equipment/create`);
+                }}
+              >
+                <AddCircleIcon />
+              </IconButton>
+            </Tooltip>
           </div>
           <div className="flex flex-row">
+            <MRT_GlobalFilterTextField table={table} />
+          </div>
+          <div className="flex flex-row">
+            <MRT_ToggleFiltersButton table={table} />
             <MRT_ShowHideColumnsButton table={table} />
             <MRT_ToggleDensePaddingButton table={table} />
             <MRT_ToggleFullScreenButton table={table} />
