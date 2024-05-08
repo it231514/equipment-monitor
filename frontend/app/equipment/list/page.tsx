@@ -1,14 +1,19 @@
 "use client";
 import { useState } from "react";
-import { EquipmentOptList, SensorList } from "../equipment.interface";
-import "./styles.css";
+import {
+  EquipmentList,
+  EquipmentOptList,
+  SensorList,
+} from "../equipment.interface";
+import "../styles.css";
 import Table from "./table";
 import TestImageBase64 from "./testimage";
 
 export default function CreateEquipmentPage() {
-  const [equipmentList, setEquipmentList] = useState(getEquipmentList());
+  const [equipmentList, setEquipmentList] = useState(fetchEqipmentList());
 
-  function getEquipmentList() {
+  function fetchEqipmentList(): EquipmentList {
+    // TODO fetch equipment from server
     return [
       {
         id: 1,

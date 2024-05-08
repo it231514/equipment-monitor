@@ -110,23 +110,23 @@ export default function EquipmentTable({ tableData }: Props) {
             </div>
             <div className="w-full">
               <ul className="flex flex-col w-full [&>li]:border [&>li]:border-gray-200 [&>li]:bg-white [&>li]:rounded-sm [&>li]:my-[0.05rem] [&>li]:p-1 [&>li]:inline-flex">
-                <li key={row.original.articleNr}>
+                <li key="articleNumber">
                   <span className="w-1/5">Article Number </span>
                   <span>{row.original.articleNr}</span>
                 </li>
-                <li key={row.original.manufacturer}>
+                <li key="manufacturer">
                   <span className="w-1/5">Manufacturer </span>
                   <span>{row.original.manufacturer}</span>
                 </li>
-                <li key={row.original.chairperson}>
+                <li key="chairperson">
                   <span className="w-1/5">Chairperson</span>
                   <span>{row.original.chairperson}</span>
                 </li>
-                <li key={row.original.lastInspection?.toDateString()}>
+                <li key="lastInspection">
                   <span className="w-1/5">Last Inspection</span>
                   <span>{row.original.lastInspection?.toDateString()}</span>
                 </li>
-                <li key={row.original.nextInspection?.toDateString()}>
+                <li key="nextInspection">
                   <span className="w-1/5">Next Inspection</span>
                   <span> {row.original.nextInspection?.toDateString()}</span>
                 </li>
@@ -140,24 +140,24 @@ export default function EquipmentTable({ tableData }: Props) {
                 Sensors
               </span>
               <ul className="grid w-full gap-2 grid-cols-[repeat(auto-fit,minmax(20rem,1fr))]">
-                {row.original.sensors?.map((sensor) => (
+                {row.original.sensors?.map((sensor, index) => (
                   <li
-                    key={sensor.id}
+                    key={"sensor-" + index}
                     className="inline-flex flex-col bg-transparent "
                   >
                     <span className="bg-slate-100 p-2">
                       SR: {sensor.serialNr} (Type: {sensor.type})
                     </span>
                     <ul className="inline-flex flex-col w-full [&>li]:border [&>li]:border-gray-100 [&>li]:bg-white [&>li]:rounded-sm [&>li]:p-1 [&>li]:inline-flex">
-                      <li key={sensor.mileage}>
+                      <li key="mileage">
                         <span className="w-1/2">Mileage:</span>
                         <span>{sensor.mileage} km</span>
                       </li>
-                      <li key={sensor.operatingHours}>
+                      <li key="hours">
                         <span className="w-1/2">Operating Hours: </span>
                         <span>{sensor.operatingHours} h</span>
                       </li>
-                      <li key={sensor.type}>
+                      <li key="type">
                         <span className="w-1/2">Current Value:</span>
                         <span>
                           {sensor.type === "temperature"
