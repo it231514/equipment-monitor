@@ -1,5 +1,8 @@
-import { Delete as DeleteIcon } from "@mui/icons-material";
-import InfoIcon from "@mui/icons-material/Info";
+import {
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  WorkHistory as WorkHistoryIcon,
+} from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
 import {
   MRT_ColumnDef,
@@ -159,19 +162,25 @@ export default function EquipmentTable({ tableData }: Props) {
           color="primary"
           onClick={() => {
             //table.setEditingRow(row);
-            console.log(row.getValue("id"));
             //redirect(`/equipment/${row.getValue("id")}`);
             router.push(`/equipment/${row.getValue("id")}`);
           }}
         >
-          <InfoIcon />
+          <EditIcon className="fill-[#564c00]" />
+        </IconButton>{" "}
+        <IconButton
+          color="primary"
+          onClick={() => {
+            alert("This should let you set the inspection date"); // TODO implement inspection date
+          }}
+        >
+          <WorkHistoryIcon className="fill-[#00348d]" />
         </IconButton>
         <IconButton
           color="error"
           onClick={() => {
-            row.toggleExpanded();
             tableData.splice(row.index, 1); //assuming simple data table
-            // TODO call delete API
+            alert("This should let you delete the equipment"); // TODO implement delete
           }}
         >
           <DeleteIcon />
