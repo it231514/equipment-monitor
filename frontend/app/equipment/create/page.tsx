@@ -1,141 +1,147 @@
 "use client";
-
 import { Button, Stack } from "@mui/material";
-import {
-  AutocompleteElement,
-  CheckboxButtonGroup,
-  CheckboxElement,
-  MultiSelectElement,
-  PasswordElement,
-  PasswordRepeatElement,
-  RadioButtonGroup,
-  SelectElement,
-  SwitchElement,
-  TextFieldElement,
-  useForm,
-} from "react-hook-form-mui";
+import { TextFieldElement, useForm } from "react-hook-form-mui";
 import { DateFnsProvider } from "react-hook-form-mui/date-fns";
 import { DatePickerElement } from "react-hook-form-mui/date-pickers";
+import { NewEquipment, SensorList } from "../equipment.interface";
+import ItemService from "../item.service";
 
 function CreateEquipmentPage() {
   const { control, handleSubmit } = useForm<{
-    multi_select: string[];
-    name: string;
-    auto: string;
-    auto_multi: string[];
-    select: string;
-    switch: boolean;
-    checkbox: string[];
-    check: boolean;
-    date: string;
-    radio: string;
-    password: string;
-    password_repeat: string;
+    articleNr: string;
+    serialNr: string;
+    manufacturer: string;
+    chairperson: string;
+    location: string;
+    locationPrecision: string;
+    lastInspectionDate: Date;
+    image: string;
+    description: string;
+    nextInspectionDate: Date;
+    sensors: SensorList;
   }>({
     defaultValues: {
-      name: "",
+      articleNr: "",
+      serialNr: "",
+      manufacturer: "",
+      chairperson: "",
+      location: "",
+      locationPrecision: "",
+      image: "",
+      description: "",
+      sensors: [],
     },
   });
-  const options = [
-    {
-      id: "one",
-      label: "One",
-    },
-    {
-      id: "two",
-      label: "Two",
-    },
-    {
-      id: "three",
-      label: "Three",
-    },
-  ];
 
-  function submit() {}
+  function submit() {
+    console.log("Submitted", control._formValues);
+
+    const newEquipment: NewEquipment = {
+      articleNr: control._formValues.articleNr,
+      serialNr: control._formValues.serialNr,
+      manufacturer: control._formValues.manufacturer,
+      chairperson: control._formValues.chairperson,
+      location: control._formValues.location,
+      locationPrecise: control._formValues.locationPrecision,
+      image: control._formValues.image,
+      description: control._formValues.description,
+      lastInspection: control._formValues.lastInspectionDate,
+      nextInspection: control._formValues.nextInspectionDate,
+      sensors: [],
+    };
+
+    ItemService.addEquipment(newEquipment).then((success) => {
+      //TODO DO SOMETHING
+      console.log("Equipment Added " + success, newEquipment);
+    });
+  }
 
   return (
     <div className="w-full min-h-[calc(100vh-64px)] back">
       <div className="w-full h-full p-4 flex flex-row">
-        <div className="bg-white w-full h-full rounded-sm inline-flex flex-row flex-nowrap justify-center items-center p-4">
+        <div className="bg-white w-full h-full rounded-sm inline-flex flex-col flex-nowrap justify-center items-center p-4">
           <DateFnsProvider>
-            <form onSubmit={handleSubmit(() => submit())} noValidate>
+            <div className="bg-[#fbdc00] text-slate-700 font-semibold rounded-sm shadow-sm w-full p-1 mb-8">
+              Assign Equipment
+            </div>
+            <form
+              onSubmit={handleSubmit(() => submit())}
+              noValidate
+              className="flex flex-col gap-2 w-full h-full text-black"
+            >
               <Stack spacing={2}>
                 <TextFieldElement
-                  name={"name"}
-                  label={"Name"}
+                  name={"articleNr"}
+                  label={"Article Number"}
                   control={control}
                   required
                   fullWidth
                 />
-                <AutocompleteElement
-                  name={"auto"}
-                  label={"Autocomplete"}
+                <TextFieldElement
+                  name={"serialNr"}
+                  label={"Serial Number"}
                   control={control}
-                  options={options}
-                />
-                <AutocompleteElement
-                  name={"auto_multi"}
-                  label={"Autocomplete Multiple"}
-                  multiple
-                  control={control}
-                  options={options}
-                />
-                <SelectElement
-                  name={"select"}
-                  label={"Select"}
-                  control={control}
-                  options={options}
+                  required
                   fullWidth
                 />
-                <MultiSelectElement
-                  showCheckbox
-                  name={"multi_select"}
-                  label={"Multi Select"}
+                <TextFieldElement
+                  name={"description"}
+                  label={"Description"}
                   control={control}
-                  options={options}
+                  required
                   fullWidth
                 />
-                <DatePickerElement name={"date"} control={control} /> <br />
-                <RadioButtonGroup
-                  name={"radio"}
-                  label={"Radio"}
+                <TextFieldElement
+                  name={"manufacturer"}
+                  label={"Manufacturer"}
                   control={control}
-                  options={options}
+                  required
+                  fullWidth
                 />
-                <CheckboxButtonGroup
-                  name={"checkbox"}
-                  label={"Radio"}
+                <TextFieldElement
+                  name={"chairperson"}
+                  label={"Chairperson"}
                   control={control}
-                  options={options}
+                  required
+                  fullWidth
                 />
-                <PasswordElement
-                  name={"password"}
-                  label={"Password"}
+                <TextFieldElement
+                  name={"location"}
+                  label={"Location"}
+                  control={control}
+                  required
+                  fullWidth
+                />
+                <TextFieldElement
+                  name={"locationPrecision"}
+                  label={"Precise Location"}
+                  control={control}
+                  required
+                  fullWidth
+                />
+                <DatePickerElement
+                  label={"Last Inspection Date"}
+                  name={"lastInspectionDate"}
                   control={control}
                 />
-                <PasswordRepeatElement
-                  name={"password_repeat"}
-                  label={"Password Repeat"}
-                  passwordFieldName={"password"}
+                <DatePickerElement
+                  label={"Next Inspection Date"}
+                  name={"nextInspectionDate"}
                   control={control}
                 />
-                <SwitchElement
-                  name={"switch"}
-                  label={"Switch"}
-                  control={control}
-                />
-                <CheckboxElement
-                  name={"check"}
-                  label={"Check"}
-                  control={control}
-                />
-                <Button type={"submit"} color={"primary"}>
-                  Submit
+                <br />
+                <Button
+                  type={"submit"}
+                  variant="contained"
+                  classes={{
+                    root: "bg-[#fbdc00] text-black hover:text-white hover:bg-slate-700",
+                  }}
+                >
+                  Create
                 </Button>
               </Stack>
             </form>
           </DateFnsProvider>
-          ;
         </div>
       </div>
     </div>

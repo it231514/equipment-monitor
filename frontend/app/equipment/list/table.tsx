@@ -17,35 +17,34 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { useRouter } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
 import Equipment, { EquipmentList } from "../equipment.interface";
+import ItemService from "../item.service";
 
 interface Props {
   tableData: EquipmentList;
+  setTableData: Dispatch<SetStateAction<EquipmentList>>;
 }
 
-export default function EquipmentTable({ tableData }: Props) {
+export default function EquipmentTable({ tableData, setTableData }: Props) {
   const router = useRouter();
 
   const columns: MRT_ColumnDef<Equipment>[] = [
     {
       accessorKey: "id",
       header: "Pos",
-      size: 80,
     },
     {
       accessorKey: "serialNr",
       header: "Serial",
-      size: 100,
     },
     {
       accessorKey: "description",
       header: "Description",
-      size: 200,
     },
     {
       accessorKey: "location",
       header: "Location",
-      size: 150,
     },
   ];
 
@@ -197,8 +196,13 @@ export default function EquipmentTable({ tableData }: Props) {
         <IconButton
           color="error"
           onClick={() => {
-            tableData.splice(row.index, 1); //assuming simple data table
-            alert("This should let you delete the equipment"); // TODO implement delete
+            ItemService.deleteEquipment(row.getValue("id")).then((success) => {
+              // TODO DO SOMETHING
+              console.log("Equipment Deleted " + success, row.getValue("id"));
+              tableData.splice(row.index, 1);
+              setTableData(tableData);
+              //alert("This should let you delete the equipment");
+            });
           }}
         >
           <DeleteIcon />

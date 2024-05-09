@@ -1,17 +1,21 @@
 export default interface Equipment {
-  id: number;
+  id: number | string;
   serialNr: string;
   articleNr: string;
   description: string;
   location: string;
-  image: string;
+  locationPrecise: string;
+  image: string | null;
   manufacturer: string;
   chairperson: string;
-  lastInspection: Date;
-  nextInspection: Date;
+  lastInspection: Date | null;
+  nextInspection: Date | null;
   sensors: SensorList;
 }
 
+// export a new type where manufacturer and chairperson are set to optional
+export type NewEquipment = Omit<Equipment, "id">;
+export type UpdateEquipment = Partial<Omit<Equipment, "id">>;
 export type EquipmentEssentials = Pick<
   Equipment,
   "id" | "serialNr" | "description" | "location"
