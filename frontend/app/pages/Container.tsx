@@ -480,31 +480,31 @@ export default function PersistentDrawerLeft({ children, ...props }: Props) {
               path: "/contact",
               icon: <ContactMailIcon></ContactMailIcon>,
             },
-            // {
-            //   text: "Sensors",
-            //   path: "/sensor",
-            //   icon: <SensorsIcon></SensorsIcon>,
-            // },
-            // {
-            //   text: "Sensor Type",
-            //   path: "/sensor/sensorType",
-            //   icon: <TypeSpecimenIcon></TypeSpecimenIcon>,
-            // },
-            // {
-            //   text: "Messages",
-            //   path: "/sensor/message",
-            //   icon: <InboxIcon></InboxIcon>,
-            // },
-            // {
-            //   text: "Message Values",
-            //   path: "/sensor/message/messageValue",
-            //   icon: <MessageIcon></MessageIcon>,
-            // },
-            // {
-            //   text: "Sensor Data",
-            //   path: "/sensor/sensorData",
-            //   icon: <AutoGraphIcon></AutoGraphIcon>,
-            // },
+            {
+              text: "Sensors",
+              path: "/sensor",
+              icon: <SensorsIcon></SensorsIcon>,
+            },
+            {
+              text: "Sensor Type",
+              path: "/sensor/sensorType",
+              icon: <TypeSpecimenIcon></TypeSpecimenIcon>,
+            },
+            {
+              text: "Messages",
+              path: "/sensor/message",
+              icon: <InboxIcon></InboxIcon>,
+            },
+            {
+              text: "Message Values",
+              path: "/sensor/message/messageValue",
+              icon: <MessageIcon></MessageIcon>,
+            },
+            {
+              text: "Sensor Data",
+              path: "/sensor/sensorData",
+              icon: <AutoGraphIcon></AutoGraphIcon>,
+            },
             {
               text: "Create Equimpent",
               path: "/createEquipment",
