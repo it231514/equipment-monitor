@@ -5,7 +5,17 @@ import {
   Image as ImageIcon,
   WorkHistory as WorkHistoryIcon,
 } from "@mui/icons-material";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import {
   MRT_ColumnDef,
   MRT_GlobalFilterTextField,
@@ -17,9 +27,123 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
+import { Root, createRoot } from "react-dom/client";
+import { useForm } from "react-hook-form-mui";
+import { DateFnsProvider } from "react-hook-form-mui/date-fns";
+import { DatePickerElement } from "react-hook-form-mui/date-pickers";
 import Equipment, { EquipmentList } from "../equipment.interface";
 import ItemService from "../item.service";
+
+interface SetInspectionDateDialogProps {
+  row: Equipment | null;
+}
+
+export function SetInspectionDateDialog({ row }: SetInspectionDateDialogProps) {
+  const [open, setOpen] = React.useState(true);
+
+  const { control, handleSubmit } = useForm<{
+    lastInspectionDate: Date;
+    nextInspectionDate: Date;
+  }>({
+    defaultValues: {
+      lastInspectionDate: new Date(),
+      nextInspectionDate: new Date(),
+    },
+  });
+
+  return (
+    <Dialog
+      open={open}
+      onClose={() => {}}
+      PaperProps={{
+        component: "form",
+        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+          event.preventDefault();
+
+          console.log(row);
+          console.log(control._formValues);
+
+          setOpen(false);
+        },
+      }}
+    >
+      <DialogTitle>Set Inspection Date</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Set the next inspection date for {row?.description}.
+        </DialogContentText>
+        <div className="w-full mt-8 inline-flex flex-col gap-6">
+          <DateFnsProvider>
+            <DatePickerElement
+              label={"Last Inspection Date"}
+              name={"lastInspectionDate"}
+              control={control}
+            />
+            <DatePickerElement
+              label={"Next Inspection Date"}
+              name={"nextInspectionDate"}
+              control={control}
+            />
+          </DateFnsProvider>
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          Cancel
+        </Button>
+        <Button type="submit">Subscribe</Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+interface DeleteDialogProps {
+  row: Equipment | null;
+  onConfirm: () => void;
+}
+
+export function DeleteItemDialog({ row, onConfirm }: DeleteDialogProps) {
+  const [open, setOpen] = React.useState(true);
+
+  return (
+    <Dialog open={open} onClose={() => {}}>
+      <DialogTitle>Delete Item</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure to delete this item?: {row?.description} (
+          {row?.articleNr}
+          ).
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            setOpen(false);
+            onConfirm;
+          }}
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={() => {
+            setOpen(false);
+            onConfirm();
+          }}
+          color="error"
+          variant="outlined"
+          className=""
+        >
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 
 interface Props {
   tableData: EquipmentList;
@@ -27,7 +151,49 @@ interface Props {
 }
 
 export default function EquipmentTable({ tableData, setTableData }: Props) {
+  const [root, setRoot] = React.useState<Root | null>(null);
+
   const router = useRouter();
+
+  const handleClickOpen = (row: Equipment) => {
+    let dialogRoot =
+      root ||
+      createRoot(
+        document.getElementById("SetInspectionDateDialog") as HTMLElement
+      );
+
+    if (root === null) setRoot(dialogRoot);
+
+    dialogRoot.render(
+      <SetInspectionDateDialog key={row.id + "_setDate"} row={row} />
+    );
+  };
+
+  const handleClickOpenDeleteDialog = (row: Equipment, tableIndex: number) => {
+    let dialogRoot =
+      root ||
+      createRoot(
+        document.getElementById("SetInspectionDateDialog") as HTMLElement
+      );
+
+    if (root === null) setRoot(dialogRoot);
+
+    dialogRoot.render(
+      <DeleteItemDialog
+        key={row.id + "_delete"}
+        row={row}
+        onConfirm={() => {
+          ItemService.deleteEquipment(row.id).then((success) => {
+            // TODO DO SOMETHING
+            console.log("Equipment Deleted " + success, row.id);
+            tableData.splice(tableIndex, 1);
+            setTableData(tableData);
+            //alert("This should let you delete the equipment");
+          });
+        }}
+      />
+    );
+  };
 
   const columns: MRT_ColumnDef<Equipment>[] = [
     {
@@ -187,22 +353,14 @@ export default function EquipmentTable({ tableData, setTableData }: Props) {
         </IconButton>{" "}
         <IconButton
           color="primary"
-          onClick={() => {
-            alert("This should let you set the inspection date"); // TODO implement inspection date
-          }}
+          onClick={() => handleClickOpen(row.original)}
         >
           <WorkHistoryIcon className="fill-[#00348d]" />
         </IconButton>
         <IconButton
           color="error"
           onClick={() => {
-            ItemService.deleteEquipment(row.getValue("id")).then((success) => {
-              // TODO DO SOMETHING
-              console.log("Equipment Deleted " + success, row.getValue("id"));
-              tableData.splice(row.index, 1);
-              setTableData(tableData);
-              //alert("This should let you delete the equipment");
-            });
+            handleClickOpenDeleteDialog(row.original, row.index);
           }}
         >
           <DeleteIcon />
@@ -240,6 +398,7 @@ export default function EquipmentTable({ tableData, setTableData }: Props) {
   return (
     <Box className="w-full">
       <MaterialReactTable table={table} />
+      <div id="SetInspectionDateDialog"></div>
     </Box>
   );
 }

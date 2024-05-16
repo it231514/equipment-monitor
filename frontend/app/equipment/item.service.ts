@@ -134,7 +134,7 @@ export default abstract class ItemService {
     }));
   }
 
-  public static async deleteEquipment(id: number): Promise<boolean> {
+  public static async deleteEquipment(id: number | string): Promise<boolean> {
     this.equipmentList = this.equipmentList.filter(
       (equipment) => equipment.id !== id
     );
