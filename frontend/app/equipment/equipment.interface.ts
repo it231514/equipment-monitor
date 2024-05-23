@@ -10,12 +10,13 @@ export default interface Equipment {
   chairperson: string;
   lastInspection: Date | null;
   nextInspection: Date | null;
-  sensors: SensorList;
+  sensors: string[]; // => SensorId[]
 }
 
 // export a new type where manufacturer and chairperson are set to optional
 export type NewEquipment = Omit<Equipment, "id">;
 export type UpdateEquipment = Partial<Omit<Equipment, "id">>;
+export type UpdateSensor = Partial<Omit<Sensor, "id">>;
 export type EquipmentEssentials = Pick<
   Equipment,
   "id" | "serialNr" | "description" | "location"
@@ -24,22 +25,14 @@ export type EquipmentEssentialsList = EquipmentEssentials[];
 export type EquipmentList = Equipment[];
 export type EquipmentOptList = HasKeys<Equipment>[];
 
-export type Sensor = TemperatureSensor | HumiditySensor;
 export type SensorList = Sensor[];
-export interface BaseSensor {
+export interface Sensor {
   id: string;
   type: string;
+  value: number;
   serialNr: string;
   operatingHours: number;
   mileage: number;
-}
-export interface TemperatureSensor extends BaseSensor {
-  type: "temperature";
-  temperature: number;
-}
-export interface HumiditySensor extends BaseSensor {
-  type: "humidity";
-  humidity: number;
 }
 
 export type HasKeys<T> = {

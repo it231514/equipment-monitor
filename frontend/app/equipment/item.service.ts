@@ -2,7 +2,10 @@ import Equipment, {
   EquipmentEssentialsList,
   EquipmentList,
   NewEquipment,
+  Sensor,
+  SensorList,
   UpdateEquipment,
+  UpdateSensor,
 } from "./equipment.interface";
 import TestImageBase64 from "./list/testimage";
 
@@ -12,6 +15,56 @@ import TestImageBase64 from "./list/testimage";
 export default abstract class ItemService {
   private constructor() {} // This class should not be instantiated
 
+  private static sensorList: SensorList = [
+    {
+      id: crypto.randomUUID(),
+      type: "temperature",
+      serialNr: "45786947896",
+      operatingHours: 3453,
+      mileage: 5675,
+      value: 23.5,
+    },
+    {
+      id: crypto.randomUUID(),
+      type: "temperature",
+      serialNr: "45786947896",
+      operatingHours: 3453,
+      mileage: 5675,
+      value: 26.5,
+    },
+    {
+      id: crypto.randomUUID(),
+      type: "temperature",
+      serialNr: "45786947896",
+      operatingHours: 3453,
+      mileage: 5675,
+      value: 23.5,
+    },
+    {
+      id: crypto.randomUUID(),
+      type: "temperature",
+      serialNr: "45786947896",
+      operatingHours: 3453,
+      mileage: 5675,
+      value: 26.5,
+    },
+    {
+      id: crypto.randomUUID(),
+      type: "temperature",
+      serialNr: "45786947896",
+      operatingHours: 3453,
+      mileage: 5675,
+      value: 23.5,
+    },
+    {
+      id: crypto.randomUUID(),
+      type: "temperature",
+      serialNr: "45786947896",
+      operatingHours: 3453,
+      mileage: 5675,
+      value: 26.5,
+    },
+  ];
   private static equipmentList: EquipmentList = [
     {
       id: crypto.randomUUID(),
@@ -25,56 +78,7 @@ export default abstract class ItemService {
       chairperson: "Mr. Mustermann Max",
       lastInspection: new Date(),
       nextInspection: new Date(),
-      sensors: [
-        {
-          id: "fgjj9e",
-          type: "temperature",
-          serialNr: "45786947896",
-          operatingHours: 3453,
-          mileage: 5675,
-          temperature: 23.5,
-        },
-        {
-          id: "fgjjsds9e",
-          type: "temperature",
-          serialNr: "45786947896",
-          operatingHours: 3453,
-          mileage: 5675,
-          temperature: 26.5,
-        },
-        {
-          id: "fgjj9e",
-          type: "temperature",
-          serialNr: "45786947896",
-          operatingHours: 3453,
-          mileage: 5675,
-          temperature: 23.5,
-        },
-        {
-          id: "fgjjsds9e",
-          type: "temperature",
-          serialNr: "45786947896",
-          operatingHours: 3453,
-          mileage: 5675,
-          temperature: 26.5,
-        },
-        {
-          id: "fgjj9e",
-          type: "temperature",
-          serialNr: "45786947896",
-          operatingHours: 3453,
-          mileage: 5675,
-          temperature: 23.5,
-        },
-        {
-          id: "fgjjsds9e",
-          type: "temperature",
-          serialNr: "45786947896",
-          operatingHours: 3453,
-          mileage: 5675,
-          temperature: 26.5,
-        },
-      ],
+      sensors: this.sensorList.map((sensor) => sensor.id),
     },
     {
       id: crypto.randomUUID(),
@@ -88,16 +92,7 @@ export default abstract class ItemService {
       chairperson: "Mr. Mustermann Max",
       lastInspection: new Date(),
       nextInspection: new Date(),
-      sensors: [
-        {
-          id: "fgjj9e",
-          type: "temperature",
-          serialNr: "45786947896",
-          operatingHours: 3453,
-          mileage: 5675,
-          temperature: 23.5,
-        },
-      ],
+      sensors: [this.sensorList[3].id, this.sensorList[4].id],
     },
     {
       id: crypto.randomUUID(),
@@ -156,10 +151,41 @@ export default abstract class ItemService {
     const index = this.equipmentList.findIndex(
       (equipment) => equipment.id === id
     );
+
     this.equipmentList[index] = {
       ...this.equipmentList[index],
       ...updateItems,
     };
+
+    return true;
+  }
+
+  public static async getSensorList(): Promise<SensorList> {
+    return this.sensorList;
+  }
+
+  public static async getSensor(id: string): Promise<Sensor | undefined> {
+    return this.sensorList.find((sensor) => sensor.id === id);
+  }
+
+  public static async addSensor(sensor: Sensor): Promise<boolean> {
+    this.sensorList.push(sensor);
+
+    return true;
+  }
+
+  public static async deleteSensor(id: string): Promise<boolean> {
+    this.sensorList = this.sensorList.filter((sensor) => sensor.id !== id);
+
+    return true;
+  }
+
+  public static async updateSensor(
+    id: string,
+    sensor: UpdateSensor
+  ): Promise<boolean> {
+    const index = this.sensorList.findIndex((sensor) => sensor.id === id);
+    this.sensorList[index] = { ...this.sensorList[index], ...sensor };
 
     return true;
   }

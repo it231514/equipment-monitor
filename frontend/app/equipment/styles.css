@@ -9,9 +9,10 @@
 ::-webkit-scrollbar {
   right: 0;
   height: 0.5rem;
+  width: 0.8rem;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #fbdc00;
-  border-radius: 0.2rem;
+  border-radius: 0rem;
 }

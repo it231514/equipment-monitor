@@ -5,17 +5,7 @@ import {
   Image as ImageIcon,
   WorkHistory as WorkHistoryIcon,
 } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import {
   MRT_ColumnDef,
   MRT_GlobalFilterTextField,
@@ -27,123 +17,12 @@ import {
   useMaterialReactTable,
 } from "material-react-table";
 import { useRouter } from "next/navigation";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Root, createRoot } from "react-dom/client";
-import { useForm } from "react-hook-form-mui";
-import { DateFnsProvider } from "react-hook-form-mui/date-fns";
-import { DatePickerElement } from "react-hook-form-mui/date-pickers";
-import Equipment, { EquipmentList } from "../equipment.interface";
+import DeleteItemDialog from "../dialogs/delete-item.dialog";
+import SetInspectionDateDialog from "../dialogs/set-inspection-date.dialog";
+import Equipment, { EquipmentList, Sensor } from "../equipment.interface";
 import ItemService from "../item.service";
-
-interface SetInspectionDateDialogProps {
-  row: Equipment | null;
-}
-
-export function SetInspectionDateDialog({ row }: SetInspectionDateDialogProps) {
-  const [open, setOpen] = React.useState(true);
-
-  const { control, handleSubmit } = useForm<{
-    lastInspectionDate: Date;
-    nextInspectionDate: Date;
-  }>({
-    defaultValues: {
-      lastInspectionDate: new Date(),
-      nextInspectionDate: new Date(),
-    },
-  });
-
-  return (
-    <Dialog
-      open={open}
-      onClose={() => {}}
-      PaperProps={{
-        component: "form",
-        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-          event.preventDefault();
-
-          console.log(row);
-          console.log(control._formValues);
-
-          setOpen(false);
-        },
-      }}
-    >
-      <DialogTitle>Set Inspection Date</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Set the next inspection date for {row?.description}.
-        </DialogContentText>
-        <div className="w-full mt-8 inline-flex flex-col gap-6">
-          <DateFnsProvider>
-            <DatePickerElement
-              label={"Last Inspection Date"}
-              name={"lastInspectionDate"}
-              control={control}
-            />
-            <DatePickerElement
-              label={"Next Inspection Date"}
-              name={"nextInspectionDate"}
-              control={control}
-            />
-          </DateFnsProvider>
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={() => {
-            setOpen(false);
-          }}
-        >
-          Cancel
-        </Button>
-        <Button type="submit">Subscribe</Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
-interface DeleteDialogProps {
-  row: Equipment | null;
-  onConfirm: () => void;
-}
-
-export function DeleteItemDialog({ row, onConfirm }: DeleteDialogProps) {
-  const [open, setOpen] = React.useState(true);
-
-  return (
-    <Dialog open={open} onClose={() => {}}>
-      <DialogTitle>Delete Item</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Are you sure to delete this item?: {row?.description} (
-          {row?.articleNr}
-          ).
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          onClick={() => {
-            setOpen(false);
-            onConfirm;
-          }}
-        >
-          Cancel
-        </Button>
-        <Button
-          onClick={() => {
-            setOpen(false);
-            onConfirm();
-          }}
-          color="error"
-          variant="outlined"
-          className=""
-        >
-          Delete
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
 
 interface Props {
   tableData: EquipmentList;
@@ -152,8 +31,19 @@ interface Props {
 
 export default function EquipmentTable({ tableData, setTableData }: Props) {
   const [root, setRoot] = React.useState<Root | null>(null);
+  const [sensors, setSensors] = useState<Sensor[] | undefined>(undefined);
 
   const router = useRouter();
+
+  useEffect(() => {
+    ItemService.getSensorList().then((data) => {
+      setSensors(data);
+    });
+  }, [sensors]);
+
+  const getSensorById = (sensorId: string) => {
+    return sensors?.find((sensor) => sensor.id === sensorId);
+  };
 
   const handleClickOpen = (row: Equipment) => {
     let dialogRoot =
@@ -311,23 +201,24 @@ export default function EquipmentTable({ tableData, setTableData }: Props) {
                     className="inline-flex flex-col bg-transparent "
                   >
                     <span className="bg-slate-100 p-2">
-                      SR: {sensor.serialNr} (Type: {sensor.type})
+                      SR: {getSensorById(sensor)?.serialNr} (Type:
+                      {getSensorById(sensor)?.type})
                     </span>
                     <ul className="inline-flex flex-col w-full [&>li]:border [&>li]:border-gray-100 [&>li]:bg-white [&>li]:rounded-sm [&>li]:p-1 [&>li]:inline-flex">
                       <li key="mileage">
                         <span className="w-1/2">Mileage:</span>
-                        <span>{sensor.mileage} km</span>
+                        <span>{getSensorById(sensor)?.mileage} km</span>
                       </li>
                       <li key="hours">
                         <span className="w-1/2">Operating Hours: </span>
-                        <span>{sensor.operatingHours} h</span>
+                        <span>{getSensorById(sensor)?.operatingHours} h</span>
                       </li>
                       <li key="type">
                         <span className="w-1/2">Current Value:</span>
                         <span>
-                          {sensor.type === "temperature"
-                            ? sensor.temperature + " °C"
-                            : sensor.humidity}
+                          {getSensorById(sensor)?.type === "temperature"
+                            ? getSensorById(sensor)?.value + " °C"
+                            : getSensorById(sensor)?.value}
                         </span>
                       </li>
                     </ul>
