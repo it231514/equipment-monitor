@@ -10,7 +10,7 @@ export default function CreateEquipmentPage() {
 
   useEffect(() => {
     ItemService.getEquipmentList().then((data) => setEquipmentList(data));
-  }, [equipmentList]);
+  }, []);
 
   return (
     <div className="w-full min-h-[calc(100vh-64px)] back">

@@ -12,9 +12,15 @@ export default function EquipmentDetailsPage() {
   const params = useParams<{ id: string }>();
   const [equipment, setEquipment] = useState<Equipment | undefined>(undefined);
   const [sensors, setSensors] = useState<Sensor[] | undefined>(undefined);
+  const [lastInsDate, setLastInsDate] = useState<null | Date | undefined>(null);
+  const [nextInsDate, setNextInsDate] = useState<null | Date | undefined>(null);
 
   useEffect(() => {
-    ItemService.getEqipment(params.id).then((data) => setEquipment(data));
+    ItemService.getEqipment(params.id).then((data) => {
+      setEquipment(data);
+      setLastInsDate(data?.lastInspection);
+      setNextInsDate(data?.nextInspection);
+    });
   }, []);
 
   useEffect(() => {
@@ -194,8 +200,8 @@ export default function EquipmentDetailsPage() {
                     <DatePicker
                       className="w-full"
                       autoFocus
-                      // TODO SET DEFAULT VALUE ???
-                      // defaultValue={equipment?.lastInspection}
+                      format="dd / MM / yyyy"
+                      value={lastInsDate as null}
                       onChange={(newValue) => {
                         if (equipment)
                           ItemService.updateEquipment(equipment.id, {
@@ -214,7 +220,8 @@ export default function EquipmentDetailsPage() {
                   <DateFnsProvider>
                     <DatePicker
                       className="w-full"
-                      defaultValue={equipment?.nextInspection as null}
+                      format="dd / MM / yyyy"
+                      value={nextInsDate as null}
                       onChange={(newValue) => {
                         if (equipment)
                           ItemService.updateEquipment(equipment.id, {

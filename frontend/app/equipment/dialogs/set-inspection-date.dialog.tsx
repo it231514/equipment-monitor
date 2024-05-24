@@ -23,12 +23,12 @@ export default function SetInspectionDateDialog({
   const [open, setOpen] = React.useState(true);
 
   const { control, handleSubmit } = useForm<{
-    lastInspectionDate: Date;
-    nextInspectionDate: Date;
+    lastInspectionDate: Date | null;
+    nextInspectionDate: Date | null;
   }>({
     defaultValues: {
-      lastInspectionDate: new Date(),
-      nextInspectionDate: new Date(),
+      lastInspectionDate: row?.lastInspection,
+      nextInspectionDate: row?.nextInspection,
     },
   });
 
