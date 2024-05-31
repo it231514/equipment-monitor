@@ -1,9 +1,19 @@
 "use client";
-import { Delete as DeleteIcon, Image as ImageIcon } from "@mui/icons-material";
-import { Autocomplete, IconButton, TextField } from "@mui/material";
+import {
+  CloudUpload as CloudUploadIcon,
+  Delete as DeleteIcon,
+  Image as ImageIcon,
+} from "@mui/icons-material";
+import {
+  Autocomplete,
+  Button,
+  IconButton,
+  TextField,
+  styled,
+} from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { BaseSyntheticEvent, useEffect, useState } from "react";
 import { DateFnsProvider } from "react-hook-form-mui/date-fns";
 import Equipment, { Sensor } from "../equipment.interface";
 import ItemService from "../item.service";
@@ -33,26 +43,72 @@ export default function EquipmentDetailsPage() {
     return sensors?.find((sensor) => sensor.id === sensorId);
   };
 
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+
+  function handleUploadClick(event: BaseSyntheticEvent) {
+    var file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      if (equipment) {
+        ItemService.updateEquipment(equipment.id, {
+          image: reader.result?.toString() || "",
+        }).then((data) =>
+          setEquipment({
+            ...equipment,
+            image: reader.result?.toString() || "",
+          })
+        );
+      }
+      //console.log(reader.result);
+    };
+  }
+
   return (
     <div
       key="equipment-details"
       className="w-full min-h-[calc(100vh-64px)] back"
     >
       <div className="p-4 flex flex-col gap-2 w-full h-full text-black text-left">
-        <div className="inline-flex flex-row">
-          <div className="flex items-center justify-center w-56 mr-10 p-3 border-2 rounded-md overflow-hidden border-slate-600">
+        <div className="inline-flex flex-col sm:flex-row">
+          <div className="sm:mb-0 mb-2 sm:w-56 w-full flex flex-col items-center justify-center  mr-10 p-3 border-2 rounded-md overflow-hidden border-slate-600">
             {(equipment?.image && (
               <img
                 src={equipment?.image}
                 alt="Element Image"
-                className="h-auto w-full"
+                className="max-h-72 sm:max-h-full h-auto mt-auto mb-2"
               />
             )) || (
-              <div className="flex flex-col justify-center items-center w-full h-full text-slate-400">
+              <div className="flex flex-col justify-center items-center w-full h-full text-slate-400 mt-auto mb-2">
                 <ImageIcon />
                 No Image
               </div>
             )}
+
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon />}
+              classes={{
+                root: "hover:bg-[#fbdc00] hover:text-black text-white bg-slate-700 h-12 w-full bottom-0 mt-auto",
+              }}
+            >
+              Upload Image
+              <VisuallyHiddenInput type="file" onChange={handleUploadClick} />
+            </Button>
           </div>
           <div className="w-full">
             <ul className="flex flex-col w-full [&>li]:border-2 [&>li]:border-slate-600  [&>li]:bg-white [&>li]:rounded-sm [&>li]:my-[0.05rem] [&>li]:p-1 [&>li]:inline-flex">

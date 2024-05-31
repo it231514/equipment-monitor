@@ -1,7 +1,8 @@
 "use client";
-import { Autocomplete, Button, Stack, TextField } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { Autocomplete, Button, Stack, TextField, styled } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { BaseSyntheticEvent, useEffect, useState } from "react";
 import { TextFieldElement, useForm } from "react-hook-form-mui";
 import { DateFnsProvider } from "react-hook-form-mui/date-fns";
 import { DatePickerElement } from "react-hook-form-mui/date-pickers";
@@ -9,35 +10,38 @@ import { NewEquipment, Sensor } from "../equipment.interface";
 import ItemService from "../item.service";
 
 function CreateEquipmentPage() {
-  const { control, handleSubmit } = useForm<{
-    articleNr: string;
-    serialNr: string;
-    manufacturer: string;
-    chairperson: string;
-    location: string;
-    locationPrecision: string;
-    lastInspectionDate: Date;
-    image: string;
-    description: string;
-    nextInspectionDate: Date;
-    sensors: string[];
-  }>({
+  const router = useRouter();
+
+  const [sensors, setSensors] = useState<Sensor[] | undefined>(undefined);
+  const [image, setImage] = useState<string>("");
+
+  const { control, handleSubmit } = useForm<NewEquipment>({
     defaultValues: {
       articleNr: "",
       serialNr: "",
       manufacturer: "",
       chairperson: "",
       location: "",
-      locationPrecision: "",
-      image: "",
+      locationPrecise: "",
+      image: image,
       description: "",
       sensors: [],
+      nextInspection: null,
+      lastInspection: null,
     },
   });
 
-  const [sensors, setSensors] = useState<Sensor[] | undefined>(undefined);
-
-  const router = useRouter();
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   useEffect(() => {
     ItemService.getSensorList().then((data) => {
@@ -46,25 +50,24 @@ function CreateEquipmentPage() {
   }, [, sensors]);
 
   function submit() {
-    const newEquipment: NewEquipment = {
-      articleNr: control._formValues.articleNr,
-      serialNr: control._formValues.serialNr,
-      manufacturer: control._formValues.manufacturer,
-      chairperson: control._formValues.chairperson,
-      location: control._formValues.location,
-      locationPrecise: control._formValues.locationPrecision,
-      image: control._formValues.image,
-      description: control._formValues.description,
-      lastInspection: control._formValues.lastInspectionDate,
-      nextInspection: control._formValues.nextInspectionDate,
-      sensors: control._formValues.sensors,
-    };
+    control._formValues.image = image;
+    const newEquipment = control._formValues as NewEquipment;
 
     ItemService.addEquipment(newEquipment).then((success) => {
       console.log("Equipment Added " + success, newEquipment);
-
       router.push(`/equipment/list`);
     });
+  }
+
+  function handleUploadClick(event: BaseSyntheticEvent) {
+    var file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setImage(reader.result?.toString() || "");
+      //console.log(reader.result);
+    };
   }
 
   return (
@@ -81,6 +84,26 @@ function CreateEquipmentPage() {
               className="p-4 flex flex-col gap-2 w-full h-full text-black"
             >
               <Stack spacing={2}>
+                <div className="w-full flex justify-center items-center gap-x-3 bg-slate-100 rounded-md">
+                  <img className="max-h-52 rounded-md" src={image} />
+                </div>
+                <Button
+                  component="label"
+                  role={undefined}
+                  variant="contained"
+                  tabIndex={-1}
+                  startIcon={<CloudUploadIcon />}
+                  classes={{
+                    root: "hover:bg-[#fbdc00] hover:text-black text-white bg-slate-700 h-12",
+                  }}
+                >
+                  Upload Image
+                  <VisuallyHiddenInput
+                    type="file"
+                    onChange={handleUploadClick}
+                  />
+                </Button>
+
                 <TextFieldElement
                   name={"articleNr"}
                   label={"Article Number"}
@@ -124,19 +147,19 @@ function CreateEquipmentPage() {
                   fullWidth
                 />
                 <TextFieldElement
-                  name={"locationPrecision"}
+                  name={"locationPrecise"}
                   label={"Precise Location"}
                   control={control}
                   fullWidth
                 />
                 <DatePickerElement
                   label={"Last Inspection Date"}
-                  name={"lastInspectionDate"}
+                  name={"lastInspection"}
                   control={control}
                 />
                 <DatePickerElement
                   label={"Next Inspection Date"}
-                  name={"nextInspectionDate"}
+                  name={"nextInspection"}
                   control={control}
                 />
 
