@@ -2,6 +2,7 @@
 import React from "react";
 import { Container, Typography, Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import "./styles.css";
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -31,19 +32,26 @@ const useStyles = makeStyles((theme: any) => ({
 function AboutPage() {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <Container maxWidth="md">
-        <Box sx={{ my: 4 }}>
-          <Typography variant="h2" component="h1" gutterBottom>
-            About Us
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            We are a leading provider of equipment management solutions. Our
-            application helps businesses manage their equipment efficiently and
-            effortlessly.
-          </Typography>
-        </Box>
-      </Container>
+    <div className="w-full min-h-[calc(100vh-64px)] back root">
+      <div className="flex">
+        <Container maxWidth="md" sx={{ marginTop: "10%" }}>
+          <Box sx={{ my: 4, color: "white", textAlign: "start" }}>
+            <Typography
+              sx={{ margin: 0 }}
+              variant="h2"
+              component="h1"
+              gutterBottom
+            >
+              About Us
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              We are a leading provider of equipment management solutions. Our
+              application helps businesses manage their equipment efficiently
+              and effortlessly.
+            </Typography>
+          </Box>
+        </Container>
+      </div>
     </div>
   );
 }

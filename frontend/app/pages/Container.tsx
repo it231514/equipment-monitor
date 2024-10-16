@@ -198,20 +198,27 @@ export default function PersistentDrawerLeft({ children, ...props }: Props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{ bgcolor: "#fbdc00" }}>
         <Toolbar>
           {auth && (
             <IconButton
-              color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
-              sx={{ mr: 2, ...(open && { display: "none" }) }}
+              sx={{
+                mr: 2,
+                ...(open && { display: "none", color: "#0000008a" }),
+              }}
             >
               <MenuIcon />
             </IconButton>
           )}
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, color: "#0000008a" }}
+          >
             Equipment Management
           </Typography>
           {/* <h1>{t("title")}</h1> */}
@@ -224,6 +231,7 @@ export default function PersistentDrawerLeft({ children, ...props }: Props) {
                 aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
+                sx={{ color: "#0000008a" }}
               >
                 <AccountCircle />
               </IconButton>
