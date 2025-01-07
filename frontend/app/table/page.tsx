@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -18,7 +18,7 @@ const columns: GridColDef[] = [
     description: "This column has a value getter and is not sortable.",
     sortable: false,
     width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
+    valueGetter: (params: GridRenderCellParams) =>
       `${params.row.firstName || ""} ${params.row.lastName || ""}`,
   },
 ];
