@@ -9,7 +9,7 @@ const drawerWidth = 240;
 
 export const metadata: Metadata = {
   title: "Equipment Management",
-  description: "An app developed by Paul and Elias",
+  description: "An app developed by Paul Mayer and Elias Schrott © 2025",
 };
 
 export default function RootLayout({
